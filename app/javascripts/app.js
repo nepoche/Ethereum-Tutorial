@@ -255,7 +255,7 @@ window.App = {
     App.getPrice();
 
     Escrow.deployed().then(function(instance){
-      return instance.confirmPurchase({from: account, value: web3.toWei(price*2, 'ether')});
+      return instance.purchase({from: account, value: web3.toWei(price*2, 'ether')});
     })
     .then(function (){
       self.setStatus("Item successfully purchased. Please wait for the item to arrive.");
@@ -287,7 +287,7 @@ window.App = {
     var self = this;
 
     Escrow.deployed().then(function(instance){
-      return instance.confirmReceived({from: account});
+      return instance.confirmed({from: account});
     })
     .then(function (){
       self.setStatus("Item validated, funds distributed.");
@@ -328,7 +328,7 @@ window.App = {
     });
 
     Escrow.deployed().then(function(escrow){
-      var purchaseConfirmedEvent = escrow.PurchaseConfirmed();
+      var purchaseConfirmedEvent = escrow.Purchased();
       purchaseConfirmedEvent.watch(function(err, res) {
         if (err) {
           console.log(err); 
@@ -340,7 +340,7 @@ window.App = {
     });
 
     Escrow.deployed().then(function(escrow){
-      var receivedEvent = escrow.ItemReceived();
+      var receivedEvent = escrow.Confirmed();
       receivedEvent.watch(function(err, res) {
         if (err) {
           console.log(err);
